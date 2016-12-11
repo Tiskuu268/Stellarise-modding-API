@@ -19,10 +19,33 @@ def click_on_file(filename):
     except AttributeError:
         subprocess.call(['open', filename])
 
-def search(word, directory):
-    extensions = ['.txt','.yml', '.lua']
-    files = findDirectories(extensions,directory)
+
+def search_in_file(file, string):
+    with open(file, encoding='UTF-8') as new:
+        found = str()
+        while True:
+            line = new.readline()
+            if line == '':
+                break
+            elif string in line:
+                found = file
+                break
+    return found
+
+
+def search(extensions, topdir, string):
+    files = findDirectories(extensions,topdir)
     found = []
+    cleared = []
     for file in files:
-        f = open(file)
+        try:
+            found += [search_in_file(file,string)]
+        except:
+            pass
+    for item in found:
+        if item != '':
+            cleared += [item]
+    return cleared
+
+
 
