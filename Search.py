@@ -1,6 +1,7 @@
 import os
 import subprocess
 
+
 def findDirectories(extensions, topdir):
     results = str()
     for exten in extensions:
