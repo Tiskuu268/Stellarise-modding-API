@@ -6,24 +6,46 @@ class UI:
     def __init__(self, master):
         # Window Size
         self.master = master
-        self.master.minsize(width=1080, height=720)
-        self.master.maxsize(width=1080, height=720)
+        self.master.wm_title('Hopefully Stellaris Modding API')
+        self.master.minsize(width=1080, height=640)
+        self.master.maxsize(width=1080, height=640)
         self.master.grid_columnconfigure(0, weight=1)
+
+        menubar = Menu(self.master)
+
+        # create a pulldown menu, and add it to the menu bar
+        filemenu = Menu(menubar, tearoff=0)
+        filemenu.add_command(label="Help", command=startMenu)
+        filemenu.add_separator()
+        filemenu.add_command(label="Exit", command=self.master.quit)
+        menubar.add_cascade(label="File", menu=filemenu)
+        self.master.config(menu=menubar)
+
 
         # ScrollBars
         self.scrollbar1 = Scrollbar(self.master, orient=VERTICAL)
+
         self.scrollbar2 = Scrollbar(self.master, orient=VERTICAL)
+
         self.scrollbar3 = Scrollbar(self.master, orient=VERTICAL)
 
         # Labels
         self.directoryLabel = Label(self.master, text='Insert Stellaris folder directory')
         self.directoryLabel.grid(row=0, sticky=EW)
 
+        self.searchLabel = Label(self.master, text='Search something from Stellaris folder')
+        self.searchLabel.grid(row=4, sticky=EW)
+
+        self.modLabel = Label(self.master, text='Insert Stellaris Mod directory')
+        self.modLabel.grid(row=8, sticky=EW)
+
+
+
         # Directory Search
         self.directoryEntry = Entry(self.master)
         self.directoryEntry.grid(row=1,sticky=EW)
 
-        self.directoryEntryButton = Button(self.master,text='Save', relief=SUNKEN)
+        self.directoryEntryButton = Button(self.master,text='Save', relief=SUNKEN, fg='grey')
         self.directoryEntryButton.grid(row=1,column=2,sticky=EW)
 
         self.Button = Button(self.master, text='Choose', command=self.dirFindEntry)
@@ -38,32 +60,32 @@ class UI:
 
         # File Search
         self.directoryEntrySearch = Entry(self.master)
-        self.directoryEntrySearch.grid(row=4, sticky=EW)
+        self.directoryEntrySearch.grid(row=5, sticky=EW)
 
-        self.directorySearchButton = Button(self.master, text='Insert', command=self.activate_search)
-        self.directorySearchButton.grid(row=4, column=1, sticky=EW)
+        self.directorySearchButton = Button(self.master, text='Search', command=self.activate_search)
+        self.directorySearchButton.grid(row=5, column=1, sticky=EW)
 
         self.search = Listbox(self.master, yscrollcommand=self.scrollbar2.set)
         self.scrollbar2.config(command=self.search.yview)
-        self.scrollbar2.grid(row=5, column=1, rowspan=2, sticky=N + S + E + W)
-        self.search.grid(row=5, rowspan=2, sticky=N + S + E + W)
+        self.scrollbar2.grid(row=6, column=1, rowspan=2, sticky=N + S + E + W)
+        self.search.grid(row=6, rowspan=2, sticky=N + S + E + W)
         self.search.bind('<Double-Button-1>', self.OnDouble)
         self.search.bind('<Button-3>', self.createDir)
 
         # Create Directory
         self.ModEntry = Entry(self.master)
-        self.ModEntry.grid(row=7, sticky=EW)
+        self.ModEntry.grid(row=9, sticky=EW)
 
-        self.ModEntryButton = Button(self.master, text='Save', relief=SUNKEN)
-        self.ModEntryButton.grid(row=7, column=2, sticky=EW)
+        self.ModEntryButton = Button(self.master, text='Save', relief=SUNKEN, fg= 'grey')
+        self.ModEntryButton.grid(row=9, column=2, sticky=EW)
 
         self.ButtonMod = Button(self.master, text='Choose', command=self.dirFindEntryMod)
-        self.ButtonMod.grid(row=7, column=1, sticky=EW)
+        self.ButtonMod.grid(row=9, column=1, sticky=EW)
 
         self.listMod = Listbox(self.master, yscrollcommand=self.scrollbar1.set)
         self.scrollbar3.config(command=self.listMod.yview)
-        self.scrollbar3.grid(row=8, column=1, rowspan=2, sticky=N + S + E + W)
-        self.listMod.grid(row=8, rowspan=2, sticky=N + S + E + W)
+        self.scrollbar3.grid(row=10, column=1, rowspan=2, sticky=N + S + E + W)
+        self.listMod.grid(row=10, rowspan=2, sticky=N + S + E + W)
         self.listMod.bind('<Double-Button-1>', self.OnDouble)
 
 
@@ -100,7 +122,7 @@ class UI:
         self.ModEntry.insert(0,self.filename)
         self.ModEntryButton.grid_remove()
         self.ModEntryButton = Button(self.master, text='Save', command=self.saveEntryMod)
-        self.ModEntryButton.grid(row=7, column=2, sticky=EW)
+        self.ModEntryButton.grid(row=9, column=2, sticky=EW)
 
     def saveEntry(self):
         self.list.delete(0,END)
@@ -132,6 +154,23 @@ class UI:
         value = widget.get(selection[0])
         click_on_file(value)
 
+
+class HelpMenu:
+    def __init__(self, master):
+        # Window Size
+        self.master = master
+
+        self.label = Label(self.master, text=""" Controls:
+        --------------------------------------------------
+        Opening file -- Double-Click on the directory to open file
+        Creating empty file -- Choose with left click the file you wish to copy and then right click on to create empty file.""")
+        self.label.pack(side=LEFT)
+
+
+def startMenu():
+    root = Tk()
+    start = HelpMenu(root)
+    root.mainloop()
 
 def start():
     root = Tk()
