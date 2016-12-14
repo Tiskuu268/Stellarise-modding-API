@@ -62,7 +62,7 @@ class UI:
         self.directoryEntrySearch = Entry(self.master)
         self.directoryEntrySearch.grid(row=5, sticky=EW)
 
-        self.directorySearchButton = Button(self.master, text='Search', command=self.activate_search)
+        self.directorySearchButton = Button(self.master, text='Search', relief=SUNKEN, fg='grey' )
         self.directorySearchButton.grid(row=5, column=1, sticky=EW)
 
         self.search = Listbox(self.master, yscrollcommand=self.scrollbar2.set)
@@ -127,6 +127,9 @@ class UI:
     def saveEntry(self):
         self.list.delete(0,END)
         self.entry = self.directoryEntry.get()
+        self.directorySearchButton.grid_remove()
+        self.directorySearchButton = Button(self.master, text='Search', command=self.activate_search)
+        self.directorySearchButton.grid(row=5, column=1, sticky=EW)
         lst = findDirectories(['.txt','.yml', '.lua'],self.entry)
         for item in lst:
             self.list.insert(END, item)
