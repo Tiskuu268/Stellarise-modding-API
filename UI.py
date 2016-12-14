@@ -112,6 +112,7 @@ class UI:
     def saveEntryMod(self):
         self.listMod.delete(0,END)
         self.Mod = self.ModEntry.get()
+        os.chmod(self.Mod, 0o644)
         lst = findDirectories(['.txt', '.yml', '.lua'], self.Mod)
         for item in lst:
             self.listMod.insert(END, item)
