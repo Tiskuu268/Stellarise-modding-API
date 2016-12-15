@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-
+# Find all Files in directory
 def findDirectories(extensions, topdir):
     results = str()
     for exten in extensions:
@@ -13,14 +13,14 @@ def findDirectories(extensions, topdir):
     results = results.split('\n')
     return results
 
-
-def click_on_file(filename):
+# Open file
+def openFile(directory):
     try:
-        os.startfile(filename)
+        os.startfile(directory)
     except AttributeError:
-        subprocess.call(['open', filename])
+        subprocess.call(['open', directory])
 
-
+# Search keyword in file
 def search_in_file(file, string):
     with open(file, encoding='UTF-8') as new:
         found = str()
@@ -33,7 +33,7 @@ def search_in_file(file, string):
                 break
     return found
 
-
+# Search keyword in files
 def search(extensions, topdir, string):
     files = findDirectories(extensions,topdir)
     found = []
